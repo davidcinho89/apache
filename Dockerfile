@@ -1,5 +1,5 @@
 FROM php:5.4-apache
-RUN echo "=== Docker Hodeline WEB ==="
+RUN echo "=== Docker Apache Debian PHP-5.4==="
 
 RUN apt-get update; apt-get install -y vim \
   libpq-dev \
