@@ -19,6 +19,8 @@ RUN pear config-set php_ini /usr/local/etc/php/php.ini;
 RUN pecl config-set php_ini /usr/local/etc/php/php.ini;
 RUN pecl install apc;
 
+RUN apt-get install php-xdebug
+
 RUN a2enmod rewrite
 RUN service apache2 restart
 
