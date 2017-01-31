@@ -19,7 +19,7 @@ RUN pear config-set php_ini /usr/local/etc/php/php.ini;
 RUN pecl config-set php_ini /usr/local/etc/php/php.ini;
 RUN pecl install apc;
 
-RUN apt-get install php-xdebug
+RUN echo extension=apc.so > /usr/local/etc/php/conf.d/docker-php-ext-apc.ini
 
 RUN a2enmod rewrite
 RUN service apache2 restart
