@@ -22,7 +22,12 @@ RUN pecl install https://xdebug.org/files/xdebug-2.4.1.tgz
 
 RUN echo extension=apc.so > /usr/local/etc/php/conf.d/docker-php-ext-apc.ini 
 
+RUN mkdir /etc/apache2/ssl
+ADD ./server.crt /etc/apache2/ssl/
+ADD ./server.key /etc/apache2/ssl/
+
 RUN a2enmod rewrite
+RUN a2enmod ssl
 RUN service apache2 restart
 
 COPY php.ini /usr/local/etc/php/
@@ -30,7 +35,12 @@ COPY php.ini /usr/local/etc/php/
 RUN docker-php-ext-enable xdebug
 
 ADD ./001-docker.conf /etc/apache2/sites-available/
-RUN ln -s /etc/apache2/sites-available/001-docker.conf /etc/apache2/sites-enabled/
+ADD ./001-docker-ssl.conf /etc/apache2/sites-available/
 
+RUN ln -s /etc/apache2/sites-available/001-docker.conf /etc/apache2/sites-enabled/
+RUN ln -s /etc/apache2/sites-available/001-docker-ssl.conf /etc/apache2/sites-enabled/
+
+
+EXPOSE 443
 ENTRYPOINT ["/usr/sbin/apache2ctl"]
 CMD ["-D", "FOREGROUND"]
